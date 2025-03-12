@@ -40,6 +40,11 @@ export const parseNEM12 = (text: string) => {
     if (recordIndicator === 200) {
       currentNMI = chunks[1];
       const intervalLength = Number(chunks[8]);
+      if (isNaN(intervalLength) || ![5, 15, 30].includes(intervalLength)) {
+        throw new Error(
+          `Invalid MDFF data: Invalid interval length at line ${index + 1}`
+        );
+      }
       // setup datablock for that NMI
       if (!(currentNMI in dataBlocks)) {
         dataBlocks[currentNMI] = {
@@ -60,7 +65,7 @@ export const parseNEM12 = (text: string) => {
 
       // expected number of values
       const intervalCount = MINUTES_IN_DAY / intervalLength;
-      const intervalValues = chunks.slice(2, intervalCount + 1);
+      const intervalValues = chunks.slice(2, intervalCount + 2);
 
       for (
         let intervalIndex = 0;
@@ -76,9 +81,16 @@ export const parseNEM12 = (text: string) => {
           new Date(intervalDateMs),
           "yyyy-MM-dd HH:mm:ss"
         );
+        const newValue = Number(intervalValues[intervalIndex]);
+        if (isNaN(newValue) || newValue < 0) {
+          throw new Error(
+            `Invalid MDFF data: Invalid interval value at line ${
+              index + 1
+            }, index ${intervalIndex}, value ${intervalValues[intervalIndex]}`
+          );
+        }
         dataBlocks[currentNMI].intervalValues[timestamp] =
-          (dataBlocks[currentNMI].intervalValues[timestamp] ?? 0) +
-          Number(intervalValues[intervalIndex]);
+          (dataBlocks[currentNMI].intervalValues[timestamp] ?? 0) + newValue;
       }
     } else if (recordIndicator === 400) {
       // Ignored
