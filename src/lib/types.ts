@@ -9,11 +9,23 @@ export type DataBlockRecord = Record<
   }
 >;
 
+export type NEM12ProcessedData = {
+  sqlStatements: string;
+  consumptionChartData: Record<string, number | string | null>[];
+  totalConsumption: number;
+  minTimeStamp: number;
+  maxTimeStamp: number;
+  nmiList: string[];
+};
+
 export type ParserWorkerMessage =
   | {
-      type: "data";
+      type: "progress";
       progress: number;
-      data: DataBlockRecord;
+    }
+  | {
+      type: "data";
+      data: NEM12ProcessedData;
     }
   | {
       type: "error";

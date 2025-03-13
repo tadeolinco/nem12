@@ -1,4 +1,6 @@
-import { DataBlockRecord } from "@/lib/types";
+import { DataBlockRecord, ParserWorkerMessage } from "@/lib/types";
+import { createSQLInsertStatementFromDataBlocks } from "@/lib/utils";
+import { format } from "date-fns";
 import { generateNEM12Blocks } from "../lib/parse-generator";
 const worker: Worker = self as unknown as Worker;
 
@@ -8,6 +10,11 @@ worker.onmessage = (event: MessageEvent<string>) => {
   async function parseCSV() {
     try {
       const dataBlock: DataBlockRecord = {};
+      const consumptionChartData: Record<string, number | string | null>[] = [];
+      let totalConsumption = 0;
+      let minTimeStamp = Infinity;
+      let maxTimeStamp = -Infinity;
+      let minimumIntervalLength: number = Infinity;
 
       for await (const item of generateNEM12Blocks(text)) {
         for (const nmi in item.block) {
@@ -26,16 +33,61 @@ worker.onmessage = (event: MessageEvent<string>) => {
         }
 
         worker.postMessage({
-          type: "data",
+          type: "progress",
           progress: item.progress,
-          data: item.progress === 1 ? dataBlock : {},
-        });
+        } as ParserWorkerMessage);
       }
+
+      Object.keys(dataBlock).forEach((nmi) => {
+        for (const timestamp in dataBlock[nmi].intervalValues) {
+          const timestampNumber = new Date(timestamp).getTime();
+          minTimeStamp = Math.min(minTimeStamp, timestampNumber);
+          maxTimeStamp = Math.max(maxTimeStamp, timestampNumber);
+          totalConsumption += dataBlock[nmi].intervalValues[timestamp];
+        }
+
+        minimumIntervalLength = Math.min(
+          minimumIntervalLength,
+          dataBlock[nmi].intervalLength
+        );
+      });
+
+      let currTimestamp = minTimeStamp;
+      while (currTimestamp <= maxTimeStamp) {
+        const currTimestampNumber = new Date(currTimestamp).getTime();
+        const datetime = format(new Date(currTimestamp), "yyyy-MM-dd HH:mm:ss");
+
+        const row: Record<string, number | string | null> = {
+          timestamp: currTimestampNumber,
+          name: datetime,
+        };
+
+        for (const nmi in dataBlock) {
+          const consumption = dataBlock[nmi].intervalValues[datetime];
+          row[nmi] = consumption ?? null;
+        }
+
+        consumptionChartData.push(row);
+
+        currTimestamp += minimumIntervalLength * 60 * 1000;
+      }
+
+      worker.postMessage({
+        type: "data",
+        data: {
+          sqlStatements: createSQLInsertStatementFromDataBlocks(dataBlock),
+          consumptionChartData,
+          totalConsumption,
+          minTimeStamp,
+          maxTimeStamp,
+          nmiList: Object.keys(dataBlock),
+        },
+      } as ParserWorkerMessage);
     } catch (err) {
       worker.postMessage({
         type: "error",
         error: err instanceof Error ? err.message : "Unknown error",
-      });
+      } as ParserWorkerMessage);
     }
   }
 
