@@ -8,3 +8,14 @@ export type DataBlockRecord = Record<
     >;
   }
 >;
+
+export type ParserWorkerMessage =
+  | {
+      type: "data";
+      progress: number;
+      data: DataBlockRecord;
+    }
+  | {
+      type: "error";
+      error: string;
+    };
