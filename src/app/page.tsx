@@ -1,42 +1,28 @@
 import { parseNEM12 } from "@/lib/parse";
-import { createSQLInsertStatementFromDataBlocks } from "@/lib/utils";
 
 export default async function Home() {
-  // async function onSubmit(event: FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
+  async function onSubmit(formData: FormData) {
+    "use server";
 
-  //   const formData = new FormData(event.currentTarget);
-  //   const response = await fetch("/api/parse", {
-  //     method: "POST",
-  //     body: formData,
-  //   });
+    try {
+      const file = formData.get("file") as File;
+      const text = await file.text();
 
-  //   // Handle response if necessary
-  //   const data = await response.json();
-  //   // ...
-  // }
+      const now = performance.now();
+      const dataBlock = await parseNEM12(text);
+      const end = performance.now();
 
-  const csv = `100,NEM12,201801211010,MYENERGY,ACME
-200,NMI123456789,E1,E1,N1,METER123,kWh,30,
-300,20180101,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,A,,,20180101123022,
-200,NMI987654321,E1,E1,N1,METER456,kWh,30,
-300,20180101,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,A,,,20180101123022,
-900`;
-
-  const dataBlock = parseNEM12(csv);
-  const statement = createSQLInsertStatementFromDataBlocks(dataBlock);
+      console.log(`TOTAL Time taken: ${end - now} milliseconds`);
+      console.log(dataBlock);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
-    <div className="font-mono whitespace-pre">
-      {JSON.stringify(dataBlock, null, 2)}
-      {"\n"}
-      {statement}
-    </div>
+    <form action={onSubmit} method="POST">
+      <input type="file" name="file" />
+      <button type="submit">Parse</button>
+    </form>
   );
-
-  // return null;
-  // <form action={onSubmit} method="post" encType="multipart/form-data">
-  //   <input type="file" name="file" />
-  //   <button type="submit">Parse</button>
-  // </form>
 }
