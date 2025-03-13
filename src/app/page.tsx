@@ -23,26 +23,26 @@ export default function Page() {
       if (event.data.type === "data") {
         setProgress(event.data.progress);
         const block = event.data.data;
-        setDataBlock((dataBlock) => {
-          const newDataBlock = { ...dataBlock };
+        if (event.data.progress === 1) {
+          setDataBlock((dataBlock) => {
+            const newDataBlock = { ...dataBlock };
 
-          for (const nmi in block) {
-            if (!newDataBlock[nmi]) {
-              newDataBlock[nmi] = {
-                intervalLength: block[nmi].intervalLength,
-                intervalValues: block[nmi].intervalValues,
-              };
-            } else {
-              for (const timestamp in block[nmi].intervalValues) {
-                newDataBlock[nmi].intervalValues[timestamp] =
-                  (newDataBlock[nmi].intervalValues[timestamp] ?? 0) +
-                  block[nmi].intervalValues[timestamp];
+            for (const nmi in block) {
+              if (!newDataBlock[nmi]) {
+                newDataBlock[nmi] = {
+                  intervalLength: block[nmi].intervalLength,
+                  intervalValues: block[nmi].intervalValues,
+                };
+              } else {
+                for (const timestamp in block[nmi].intervalValues) {
+                  newDataBlock[nmi].intervalValues[timestamp] =
+                    (newDataBlock[nmi].intervalValues[timestamp] ?? 0) +
+                    block[nmi].intervalValues[timestamp];
+                }
               }
             }
-          }
-          return newDataBlock;
-        });
-        if (event.data.progress === 1) {
+            return newDataBlock;
+          });
           parserWorker.terminate();
         }
       } else if (event.data.type === "error") {
