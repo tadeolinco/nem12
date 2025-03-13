@@ -5,9 +5,7 @@ import { getIntervalDateInMs } from "./utils";
 const MINUTES_IN_DAY = 60 * 24;
 const MILLISECONDS_IN_MINUTE = 60 * 1000;
 
-export const parse200Block = async (
-  lines: string[]
-): Promise<DataBlockRecord> => {
+export const parse200Block = (lines: string[]): DataBlockRecord => {
   let currentNMI: string | null = null;
 
   const dataBlock: DataBlockRecord = {};

@@ -33,13 +33,19 @@ export const parseNEM12 = async (text: string): Promise<DataBlockRecord> => {
     if (line.startsWith("200")) {
       if (index !== blockStartIndex) {
         blocksToBeParsed.push(
-          parse200Block(lines.slice(blockStartIndex, index))
+          new Promise((resolve) => {
+            resolve(parse200Block(lines.slice(blockStartIndex, index)));
+          })
         );
       }
       blockStartIndex = index;
     }
   }
-  blocksToBeParsed.push(parse200Block(lines.slice(blockStartIndex, -1)));
+  blocksToBeParsed.push(
+    new Promise((resolve) => {
+      resolve(parse200Block(lines.slice(blockStartIndex, -1)));
+    })
+  );
 
   const endSplit = performance.now();
   console.log(`Time taken to split: ${endSplit - nowSplit} milliseconds`);
