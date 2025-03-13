@@ -41,6 +41,7 @@ export default function Home() {
                 };
 
                 setProgress(progress);
+                console.log(progress);
                 startTransition(() => {
                   setDataBlock((dataBlock) => {
                     const newDataBlock = { ...dataBlock };
