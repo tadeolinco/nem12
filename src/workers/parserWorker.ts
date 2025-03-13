@@ -1,3 +1,10 @@
+/**
+ * NEM12 Parser Worker
+ *
+ * Web Worker that handles parsing of NEM12 CSV files in a non-blocking way.
+ * Uses generator functions to process data incrementally and report progress.
+ */
+
 import { DataBlockRecord, ParserWorkerMessage } from "@/lib/types";
 import { createSQLInsertStatementFromDataBlocks } from "@/lib/utils";
 import { format } from "date-fns";

@@ -1,3 +1,10 @@
+/**
+ * NEM12 200 Block Parser
+ *
+ * Parses 200 and 300 record blocks from NEM12 format CSV data.
+ * Handles complex interval data calculations and timestamp formatting.
+ */
+
 import { format } from "date-fns";
 import { DataBlockRecord } from "./types";
 import { getIntervalDateInMs } from "./utils";

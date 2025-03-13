@@ -1,5 +1,11 @@
 "use client";
 
+/**
+ * NEM12 CSV Parser
+ *
+ * Main application page that handles file uploads and processing.
+ */
+
 import ConsumptionChart from "@/components/home/ConsumptionChart";
 import FileDropPlaceholder from "@/components/home/FileDropPlaceholder";
 import SQLInsertStatements from "@/components/home/SQLInsertStatements";

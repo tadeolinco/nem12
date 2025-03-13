@@ -1,3 +1,10 @@
+/**
+ * NEM12 Generator Parser
+ *
+ * Uses async generator functions to incrementally parse NEM12 data.
+ * Allows for non-blocking processing of large files with progress reporting.
+ */
+
 import { parse200Block } from "./parse200Block";
 
 export async function* generateNEM12Blocks(text: string) {
