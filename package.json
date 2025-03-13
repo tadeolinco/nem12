@@ -50,6 +50,10 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.8"
   },
+  "optionalDependencies": {
+    "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
+    "lightningcss-linux-x64-gnu": "^1.29.1"
+  },
   "overrides": {
     "react-is": "^19.0.0-rc-69d4b800-20241021"
   }
