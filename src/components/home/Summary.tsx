@@ -13,7 +13,7 @@ const numberFormatter = new Intl.NumberFormat("en-US", {
 
 export default function Summary({ data }: SummaryProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+    <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
       <Card>
         <CardHeader>
           <CardTitle>Date Range</CardTitle>

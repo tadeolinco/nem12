@@ -27,7 +27,7 @@ export const parse200Block = (lines: string[]): DataBlockRecord => {
       const intervalLength = Number(chunks[8]);
       if (isNaN(intervalLength) || ![5, 15, 30].includes(intervalLength)) {
         throw new Error(
-          `Invalid MDFF data: Invalid interval length at line ${index + 1}`
+          `Invalid MDFF data: Invalid interval length at line ${index + 1}`,
         );
       }
       // setup datablock for that NMI
@@ -40,7 +40,7 @@ export const parse200Block = (lines: string[]): DataBlockRecord => {
     } else if (recordIndicator === 300) {
       if (currentNMI === null)
         throw new Error(
-          `Invalid MDFF data: Missing 200 data details record at ${index + 1}`
+          `Invalid MDFF data: Missing 200 data details record at ${index + 1}`,
         );
 
       // NEM12 MMDDF has their own date format, must convert to something JS can read
@@ -64,14 +64,14 @@ export const parse200Block = (lines: string[]): DataBlockRecord => {
         const intervalDateMs = blockDateMs + msDiff;
         const timestamp = format(
           new Date(intervalDateMs),
-          "yyyy-MM-dd HH:mm:ss"
+          "yyyy-MM-dd HH:mm:ss",
         );
         const newValue = Number(intervalValues[intervalIndex]);
         if (isNaN(newValue) || newValue < 0) {
           throw new Error(
             `Invalid MDFF data: Invalid interval value at line ${
               index + 1
-            }, index ${intervalIndex}, value ${intervalValues[intervalIndex]}`
+            }, index ${intervalIndex}, value ${intervalValues[intervalIndex]}`,
           );
         }
         dataBlock[currentNMI].intervalValues[timestamp] =
@@ -84,7 +84,7 @@ export const parse200Block = (lines: string[]): DataBlockRecord => {
     } else {
       // Throw error if record indicator is not recognized
       throw new Error(
-        `Invalid MDFF data: Invalid record indicator at line ${index + 1}`
+        `Invalid MDFF data: Invalid record indicator at line ${index + 1}`,
       );
     }
   }

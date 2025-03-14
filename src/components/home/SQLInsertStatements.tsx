@@ -13,7 +13,7 @@ export default function SQLInsertStatements({
 }: SQLInsertStatementsProps) {
   return (
     <>
-      <div className="flex justify-end mb-2">
+      <div className="mb-2 flex justify-end">
         <Button
           variant="outline"
           onClick={() => {
@@ -25,7 +25,7 @@ export default function SQLInsertStatements({
         </Button>
       </div>
       <ScrollArea className="h-[440px] w-full rounded-md border p-4">
-        <pre className="text-xs font-mono">{data.sqlStatements}</pre>
+        <pre className="font-mono text-xs">{data.sqlStatements}</pre>
       </ScrollArea>
     </>
   );

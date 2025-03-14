@@ -55,7 +55,7 @@ worker.onmessage = (event: MessageEvent<string>) => {
 
         minimumIntervalLength = Math.min(
           minimumIntervalLength,
-          dataBlock[nmi].intervalLength
+          dataBlock[nmi].intervalLength,
         );
       });
 

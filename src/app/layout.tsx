@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh w-dvw flex flex-col min-h-dvh`}
+        className={`${geistSans.variable} ${geistMono.variable} flex h-dvh min-h-dvh w-dvw flex-col antialiased`}
       >
         {children}
         <Toaster />

@@ -66,7 +66,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex justify-between items-center border-b h-[80px] p-4">
+      <div className="flex h-[80px] items-center justify-between border-b p-4">
         <p className="text-xl font-bold">NEM12 CSV Parser</p>
         {canUpload && file !== null && (
           <Button onClick={() => inputRef.current.click()}>
@@ -75,7 +75,7 @@ export default function Page() {
         )}
       </div>
       <main
-        className="max-w-3xl w-full flex-1 mx-auto px-4"
+        className="mx-auto w-full max-w-3xl flex-1 px-4"
         {...getRootProps()}
       >
         <input
@@ -86,10 +86,10 @@ export default function Page() {
         />
 
         {file === null && (
-          <div className="flex fade-in animate-in items-center justify-center h-full">
+          <div className="flex h-full items-center justify-center animate-in fade-in">
             <div
               role="button"
-              className="border-2 border-dashed rounded-md p-8 cursor-pointer"
+              className="cursor-pointer rounded-md border-2 border-dashed p-8"
               onClick={() => {
                 inputRef.current.click();
               }}
@@ -101,8 +101,8 @@ export default function Page() {
         {file !== null && (
           <>
             {!data && progress !== null && (
-              <div className="flex flex-col gap-4 fade-in animate-in items-center justify-center h-full">
-                <p className="font-medium text-2xl">
+              <div className="flex h-full flex-col items-center justify-center gap-4 animate-in fade-in">
+                <p className="text-2xl font-medium">
                   {progress === 1
                     ? "Crunching numbers..."
                     : `${(progress * 100).toFixed(1)}%`}
@@ -116,7 +116,7 @@ export default function Page() {
               </div>
             )}
             {data && (
-              <div className="w-full pt-6 flex flex-col h-full gap-4">
+              <div className="flex h-full w-full flex-col gap-4 pt-6">
                 <Summary data={data} />
                 <Tabs defaultValue="charts" className="w-full">
                   <TabsList>

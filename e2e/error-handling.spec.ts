@@ -27,11 +27,11 @@ test.describe("NEM12 Parser Error Handling", () => {
     await fileInput.setInputFiles(invalidFilePath);
 
     await expect(
-      page.locator("text=Invalid MDFF data: Missing header block")
+      page.locator("text=Invalid MDFF data: Missing header block"),
     ).toBeVisible();
 
     await expect(
-      page.locator("text=Select a file or drag and drop to start processing")
+      page.locator("text=Select a file or drag and drop to start processing"),
     ).toBeVisible();
   });
 
@@ -40,11 +40,11 @@ test.describe("NEM12 Parser Error Handling", () => {
     const invalidFilePath = path.join(
       __dirname,
       "fixtures",
-      "missing-header.csv"
+      "missing-header.csv",
     );
     fs.writeFileSync(
       invalidFilePath,
-      "200,NMI123456789,E1,1,E1,N1,METER1,KWH,30,20220101\n300,20220101,10,20,30,40\n900"
+      "200,NMI123456789,E1,1,E1,N1,METER1,KWH,30,20220101\n300,20220101,10,20,30,40\n900",
     );
 
     await page.goto("/");
@@ -58,7 +58,7 @@ test.describe("NEM12 Parser Error Handling", () => {
     // Wait for the error toast to appear
 
     await expect(
-      page.locator("text=Invalid MDFF data: Missing header block")
+      page.locator("text=Invalid MDFF data: Missing header block"),
     ).toBeVisible();
 
     // Clean up

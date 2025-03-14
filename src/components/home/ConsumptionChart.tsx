@@ -34,15 +34,15 @@ export default function ConsumptionChart({ data }: ConsumptionChartProps) {
       (row: Record<string, number | string | null>) => {
         return isSameDay(
           new Date(row.timestamp as number),
-          date ?? new Date(data.minTimeStamp)
+          date ?? new Date(data.minTimeStamp),
         );
-      }
+      },
     );
   }, [data.consumptionChartData, date, data.minTimeStamp]);
 
   return (
     <>
-      <div className="flex w-full mb-4">
+      <div className="mb-4 flex w-full">
         <Datepicker
           value={date}
           onChange={setDate}
@@ -71,7 +71,7 @@ export default function ConsumptionChart({ data }: ConsumptionChartProps) {
                 labelFormatter={(value, payload) => {
                   return format(
                     new Date(payload[0].payload.timestamp),
-                    "dd MMM, HH:mm"
+                    "dd MMM, HH:mm",
                   );
                 }}
               />

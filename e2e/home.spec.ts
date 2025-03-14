@@ -10,7 +10,7 @@ test.describe("NEM12 Parser Application", () => {
 
     // Check if the file upload area is displayed
     await expect(
-      page.locator("text=Select a file or drag and drop to start processing")
+      page.locator("text=Select a file or drag and drop to start processing"),
     ).toBeVisible();
   });
 

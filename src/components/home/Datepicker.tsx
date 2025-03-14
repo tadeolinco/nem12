@@ -27,7 +27,7 @@ export default function Datepicker(props: DatePickerProps) {
           variant={"outline"}
           className={cn(
             "w-[240px] pl-3 text-left font-normal",
-            !props.value && "text-muted-foreground"
+            !props.value && "text-muted-foreground",
           )}
         >
           {props.value ? format(props.value, "PPP") : <span>Pick a date</span>}

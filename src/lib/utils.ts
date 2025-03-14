@@ -15,7 +15,7 @@ export function getIntervalDateInMs(chunk: string) {
 }
 
 export function createSQLInsertStatementFromDataBlocks(
-  dataBlocks: DataBlockRecord
+  dataBlocks: DataBlockRecord,
 ) {
   let sqlInsertStatement = `INSERT INTO meter_readings ("nmi", "timestamp", "consumption")`;
   sqlInsertStatement += `\nVALUES`;
@@ -23,7 +23,7 @@ export function createSQLInsertStatementFromDataBlocks(
     const valuesRow = Object.entries(dataBlocks[nmi].intervalValues).map(
       ([timeStamp, consumption]) => {
         return `('${nmi}', '${timeStamp}', ${consumption.toFixed(3)})`;
-      }
+      },
     );
     sqlInsertStatement += "\n" + valuesRow.join(",\n");
   }
