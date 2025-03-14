@@ -38,9 +38,8 @@ The application is built using:
 2. Install dependencies:
 
    ```bash
-   npm install
-   # or
-   yarn install
+   # need force flag because of react 19
+   npm install --force
    ```
 
 3. Run the development server:
